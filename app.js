@@ -84,7 +84,19 @@ window.addEventListener('DOMContentLoaded', function(){
 // Filter Buttons
 filterBtn.forEach(function(btn){
   btn.addEventListener('click', function(e){
-    console.log(e.currentTarget.dataset.id);
+    // Gets category of all in menu
+    const category = e.currentTarget.dataset.id;
+    const menuCategory = menu.filter(function(menuItem){
+      if (menuItem.category === category){
+        return menuItem
+      }
+    });
+    if ( category === 'all'){
+      displayMenuItems(menu);
+    }
+    else {
+      displayMenuItems(menuCategory);
+    }
   })
 })
 
