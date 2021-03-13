@@ -71,33 +71,23 @@ const menu = [
     img: "./images/item-9.jpeg",
     desc: `skateboard fam synth authentic semiotics. Live-edge lyft af, edison bulb yuccie crucifix microdosing.`,
   },
+  {
+    id: 10,
+    title: "steak dinner",
+    category: "dinner",
+    price: 16.99,
+    img: "./images/item-10.jpeg",
+    desc: `skateboard fam synth authentic semiotics. Live-edge lyft af, edison bulb yuccie crucifix microdosing.`,
+  }
 ];
 
 const sectionCenter = document.querySelector('.section-center');
-const filterBtn = document.querySelectorAll('.filter-btn');
+const container = document.querySelector('.btn-container')
 
 // Load Items
 window.addEventListener('DOMContentLoaded', function(){
   displayMenuItems(menu);
-})
-
-// Filter Buttons
-filterBtn.forEach(function(btn){
-  btn.addEventListener('click', function(e){
-    // Gets category of all in menu
-    const category = e.currentTarget.dataset.id;
-    const menuCategory = menu.filter(function(menuItem){
-      if (menuItem.category === category){
-        return menuItem
-      }
-    });
-    if ( category === 'all'){
-      displayMenuItems(menu);
-    }
-    else {
-      displayMenuItems(menuCategory);
-    }
-  })
+  displayMenuButtons();
 })
 
 function displayMenuItems(menuItems){
@@ -119,3 +109,60 @@ function displayMenuItems(menuItems){
   sectionCenter.innerHTML = displayMenu;
 }
 
+function displayMenuButtons() {
+
+  // Making Sure Only one item category is stored
+  // i.e category doesnt repeat in this variable.
+  const categories = menu.reduce(function(values, item){
+    if (!values.includes(item.category)){
+      values.push(item.category);
+    }
+    return values;
+  }, ['all']
+  );
+
+  // Creating the HTML and using join method 
+  // so that ',' doesnt appear.
+  const categoryBtns = categories.map(function(category){
+    return `
+    <button class="filter-btn" type="button"data-id=${category}>
+    ${category}
+    </button>`
+  }).join('');
+  container.innerHTML = categoryBtns;
+  const filterBtn = container.querySelectorAll('.filter-btn');
+
+
+  // Filter Buttons
+  filterBtn.forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      // Gets category of all in menu
+      const category = e.currentTarget.dataset.id;
+      const menuCategory = menu.filter(function(menuItem){
+        if (menuItem.category === category){
+          return menuItem
+        }
+      });
+      if ( category === 'all'){
+        displayMenuItems(menu);
+      }
+      else {
+        displayMenuItems(menuCategory);
+      }
+    });
+  });
+}
+
+
+// Reduce Method
+// window.addEventListener('DOMContentLoaded', function(){
+//   displayMenuItems(menu);
+
+//   const categories = menu.reduce(function(values, item){
+//     if (!values.includes(item.category)){
+//       values.push(item.category);
+//     }
+//     return values;
+//   }, ['all'])
+//   console.log(categories);
+// })
